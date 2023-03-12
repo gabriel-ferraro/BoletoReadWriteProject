@@ -6,14 +6,6 @@ Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, n
 
 Futuramente, outras técnicas de integração de sistemas serão utilizadas e incrementos serão gerados ao projeto.
 
-## Sumário
-
-<details>
-  * [Tecnologias](#tecnologias)
-  * [Uso](#uso)
-  
-</details>
-
 ## Tecnologias
 
 <details>
