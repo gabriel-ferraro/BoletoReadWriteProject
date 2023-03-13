@@ -24,13 +24,14 @@ Futuramente, outras técnicas de integração de sistemas serão utilizadas e in
 <details>
   <summary><b>Clique para expandir</b></summary>
   
-  Após clonar o projeto, inicialize o docker, depois disso é possível rodar o batch run-application.bat para testá-la "automaticamente".
+  Após clonar o projeto, inicialize o docker, depois disso é possível rodar o batch [run-application.bat](./run-application.bat) para testá-la "automaticamente".
 
   Alternativamente, também é possível rodar a aplicação seguindo alguns passos:
 
   - Inicializar docker
-  - Executar o script em BoletoReadWriteProject/databaseFiles/createClientesTable.sql
-  - Executar o arquivo da aplicação em BoletoReadWriteProject/XLSMtoPostgresDB/app/src/main/java/XLSMtoPostgresDB\App.java
+  - A partir do diretório raiz desse projeto, rodar no terminal o comando: docker compose up -d
+  - Executar o script em BoletoReadWriteProject/databaseFiles/[createClientesTable.sql](./databaseFiles/createClientesTable.sql)
+  - Executar o arquivo da aplicação em BoletoReadWriteProject/XLSMtoPostgresDB/app/src/main/java/XLSMtoPostgresDB/[App.java](./XLSMtoPostgresDB/app/src/main/java/XLSMtoPostgresDB/App.java)
   - to do.....
 
   É necessário seguir todos os passos para conseguir o resultado desejado, já que diferentes aplicações estarão atuando em conjunto para efetuar ações como persistência de dados, leitura e escrita.
