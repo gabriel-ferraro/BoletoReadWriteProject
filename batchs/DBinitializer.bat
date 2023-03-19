@@ -3,8 +3,8 @@
 docker-compose up -d
 
 @REM Executa query de adição no DB
-docker exec -i postgresDB psql -U postgres postgres < ../databaseFiles/createClientesTable.sql
+docker exec -i postgresDBWriter psql -U admin postgresDBWriter < ../databaseFiles/createClientesTable.sql
 
-@REM Executa a aplicação java para carregamento dos dados XLSM no DB usando o gradlew
+@REM Executa a aplicação java para carregamento dos dados XLSM no DB usando o gradlew run
 cd ../XLSMtoPostgresDB
 ./gradlew run
