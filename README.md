@@ -2,11 +2,7 @@
 
 Projeto sendo desenvolvido na disciplina de integração de sistemas.
 
-<<<<<<< Updated upstream
 Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, nesse projeto será usado um [hot folder](https://www.ibm.com/docs/en/ahts/4.0?topic=folders-setting-up-hot) para que uma aplicação Java possa fazer a escrita de arquivos como remessa de cobrança bancária no layout CNAB240 para Caixa Economica Federal, outra aplicação em Node fará a leitura do arquivo no hot folder.
-=======
-Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, nesse projeto será usado um [hot folder](https://en.wiktionary.org/wiki/hot_folder) para que uma aplicação Java possa fazer a escrita de arquivos como remessa de cobrança bancária no layout CNAB240 para Caixa Economica Federal, outra aplicação em "a ser decidido" fará a leitura do arquivo no hot folder.
->>>>>>> Stashed changes
 
 Futuramente outras técnicas de integração de sistemas serão utilizadas, incrementando o projeto.
 
