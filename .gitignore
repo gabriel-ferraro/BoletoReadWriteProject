@@ -7,3 +7,6 @@ build
 
 # Ignore node_modules
 **/node_modules
+
+# Ignore netbeans config file for node projects
+nbproject
