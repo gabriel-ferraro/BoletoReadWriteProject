@@ -27,11 +27,13 @@ Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, n
 <details>
   <summary><b>Clique para expandir</b></summary>
   
+  - Inicialize o docker
   - Execute [runEscrita.bat](runEscrita.bat)
   - Execute [runLeitura.bat](runLeitura.bat)
 
   Alternativamente:
-  - Após clonar o projeto, inicialize o docker, depois execute o comando docker compose up --build no diretório raiz do projeto;
+  - Inicialize o docker;
+  - Execute o comando docker compose up --build no diretório raiz do projeto;
   - Execute a aplicação [XLSMtoPostgresDB](/XLSMtoPostgresDB/app/src/main/java/XLSMtoPostgresDB/App.java) para persistir os dados de escrita na base de dados postgres;
   - Execute a aplicação [BoletoWriterJAVA](/boletoWriterJAVA/app/src/main/java/boletoWriterJAVA/App.java) para obter os registros da base de dados como remessas cnab240 no [hotFolder](hotFolder)
   
