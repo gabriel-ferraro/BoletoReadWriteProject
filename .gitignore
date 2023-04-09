@@ -3,3 +3,10 @@
 
 # Ignore Gradle build output directory
 build
+/BoletoReaderNode/nbproject/private/
+
+# Ignore node_modules
+**/node_modules
+
+# Ignore netbeans config file for node projects
+nbproject

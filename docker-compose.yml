@@ -1,13 +1,24 @@
-version: '3'
+version: '3.8'
 
 services:
-  db:
+  postgresWrite:
     image: postgres:latest
-    container_name: postgresDB
-    restart: always
+    container_name: postgresDBWriter
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: myDB
+      POSTGRES_DB: postgresDBWriter
     ports:
       - "5432:5432"
+    restart: always
+
+  postgresRead:
+    image: postgres:latest
+    container_name: postgresDBReader
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgresDBReader
+    ports:
+      - "5433:5432"
+    restart: always

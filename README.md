@@ -1,10 +1,12 @@
 # BoletoReadWriteProject
 
-Projeto sendo desenvolvido na disciplina de integração de sistemas.
+Projeto desenvolvido na disciplina de integração de sistemas.
 
-Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, nesse projeto será usado um [hot folder](https://www.ibm.com/docs/en/ahts/4.0?topic=folders-setting-up-hot) para que uma aplicação Java possa fazer a escrita de arquivos como remessa de cobrança bancária no layout CNAB240 para Caixa Economica Federal, outra aplicação em Node fará a leitura do arquivo no hot folder.
+Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, nesse projeto serão usados:
 
-Futuramente outras técnicas de integração de sistemas serão utilizadas, incrementando o projeto.
+<b>[hot folder](https://www.ibm.com/docs/en/ahts/4.0?topic=folders-setting-up-hot)</b> para que uma aplicação Java possa fazer a escrita de arquivos como remessa de cobrança bancária no layout CNAB240 para Caixa Economica Federal, outra aplicação em Node fará a leitura do arquivo no hot folder.
+
+<b>[API Rest](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api)</b> documentada nos padrões da OpenAPI, para que seja possível gerar uma interface de consumo dos serviços da API, que deverá processar o pagamento caso o valor enviado seja exatamente o valor da dívida do cliente.
 
 ## Tecnologias
 
@@ -15,23 +17,32 @@ Futuramente outras técnicas de integração de sistemas serão utilizadas, incr
   * Node
   * Docker
   * Manipulação de arquivos com a técnica hot folder
-  * Diversas bibliotecas de código
+  * API rest com especificação Open API
+  * Diversas bibliotecas
   
 </details>
 
-## Uso
+## Uso da escrita e leitura no hotFolder
 
 <details>
   <summary><b>Clique para expandir</b></summary>
   
-  Após clonar o projeto, inicialize o docker, depois disso é possível rodar o batch [run-application.bat](./run-application.bat) para testá-la "automaticamente".
+  - Execute [runEscrita.bat](runEscrita.bat)
+  - Execute [runLeitura.bat](runLeitura.bat)
 
-  Alternativamente, também é possível rodar a aplicação seguindo alguns passos:
-
-  - Inicializar docker
-  - A partir do diretório raiz desse projeto, rodar no terminal o comando: docker compose up -d
-  - to do.....
-
+  Alternativamente:
+  - Após clonar o projeto, inicialize o docker, depois execute o comando docker compose up --build no diretório raiz do projeto;
+  - Execute a aplicação [XLSMtoPostgresDB](/XLSMtoPostgresDB/app/src/main/java/XLSMtoPostgresDB/App.java) para persistir os dados de escrita na base de dados postgres;
+  - Execute a aplicação [BoletoWriterJAVA](/boletoWriterJAVA/app/src/main/java/boletoWriterJAVA/App.java) para obter os registros da base de dados como remessas cnab240 no [hotFolder](hotFolder)
+  
   É necessário seguir todos os passos para conseguir o resultado desejado, já que diferentes aplicações estarão atuando em conjunto para efetuar ações como persistência de dados, leitura e escrita.
   
+</details>
+
+## Uso da API rest
+
+<details>
+  <summary><b>Clique para expandir</b></summary>
+
+  - to do;
 </details>
