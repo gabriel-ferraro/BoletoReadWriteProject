@@ -33,7 +33,7 @@ public class XLSMtoPostgres {
     }
 
     /**
-     * Processa os dados do arquivo xlsx e os adiciona como registro de uma
+     * Processa os dados do arquivo xlsm e os adiciona como registro de uma
      * tabela (clients).
      *
      * @param filePath caminho do arquivo xlsm.
