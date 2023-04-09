@@ -33,7 +33,7 @@ Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, n
 
   Alternativamente:
   - Inicialize o docker;
-  - Execute o comando docker compose up --build no diretório raiz do projeto;
+  - Execute o comando "docker compose up --build" no diretório raiz do projeto;
   - Execute a aplicação [XLSMtoPostgresDB](/XLSMtoPostgresDB/app/src/main/java/XLSMtoPostgresDB/App.java) para persistir os dados de escrita na base de dados postgres;
   - Execute a aplicação [BoletoWriterJAVA](/boletoWriterJAVA/app/src/main/java/boletoWriterJAVA/App.java) para obter os registros da base de dados como remessas cnab240 no [hotFolder](hotFolder)
   
