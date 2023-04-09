@@ -13,11 +13,11 @@ public class App {
         String password = "123456";
 
         String filePath = "../../Clientes.xlsm"; //caminho absoluto no meu PC: "C:\\boletoReadWrite\\Clientes.xlsm"
-        String tableName = "\"postgresDBWriter\".public.clientes";
+        String tableName = "\"postgresDBWriter\".public.remessas";
 
         try {
             XLSMtoPostgres converter = new XLSMtoPostgres(url, user, password);
-            converter.convert(filePath, tableName, 50);
+            converter.convert(filePath, tableName, 5);
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         } finally {

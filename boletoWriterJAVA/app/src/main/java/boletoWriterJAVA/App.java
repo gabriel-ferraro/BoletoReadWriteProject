@@ -1,34 +1,38 @@
 package boletoWriterJAVA;
 
-import com.google.common.collect.ImmutableList;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import net.anschau.cnab.caixa.cnab240.Beneficiario;
-import net.anschau.cnab.caixa.cnab240.Pagador;
-import net.anschau.cnab.caixa.cnab240.Remessa;
-import net.anschau.cnab.caixa.cnab240.Titulo;
+import java.io.IOException;
 
 public class App {
 
     public static void main(String[] args) {
         System.out.println("Iniciando");
 
-        Beneficiario beneficiario = new Beneficiario("João da Silva", "1087", 1, "123456", "86479743520");
+//        // Registra Benficiário
+//        Beneficiario beneficiario = new Beneficiario("EMPRESA XYZ", "1087", 1, "123456", "86479743520");
+//        // Registra Pagador
+//        Pagador pagador = new Pagador("Pagador PF", "65453512300", "Rua ABC, 123", "Centro", "12345678", "SAO PAULO", "SP");
+//        // Registra data de emissão
+//        LocalDate emissao = LocalDate.of(2023, 10, 02);
+//        // Registra data de vencimento
+//        LocalDate vencimento = LocalDate.of(2017, 9, 29);
+//        Titulo titulo = new Titulo(777.00d, emissao, vencimento, 3, 3, pagador);
+//        List<Titulo> titulos = ImmutableList.of(titulo);
+//        // Registra data de geração da remessa
+//        LocalDateTime dataHoraGeracao = LocalDateTime.of(2017, 10, 2, 8, 9, 44);
+//        // Registra data de gravação da remessa
+//        LocalDate dataGravacao = LocalDate.of(2017, 10, 2);
+//        int numeroRemessa = 1;
+//        // Gera remessa
+//        Remessa remessa = new Remessa(numeroRemessa, beneficiario, titulos, dataHoraGeracao, dataGravacao);
+//        String remessaGerada = remessa.gerarArquivo();
 
-        Pagador pagador = new Pagador("Pagador PF", "65453512300", "Rua ABC, 123", "Centro", "12345678", "SAO PAULO", "SP");
-
-        LocalDate emissao = LocalDate.of(2017, 10, 02);
-        LocalDate vencimento = LocalDate.of(2017, 9, 29);
-        Titulo titulo = new Titulo(6.00d, emissao, vencimento, 3, 3, pagador);
-        List<Titulo> titulos = ImmutableList.of(titulo);
-
-        int numeroRemessa = 1;
-        LocalDateTime dataHoraGeracao = LocalDateTime.of(2017, 10, 2, 8, 9, 44);
-        LocalDate dataGravacao = LocalDate.of(2017, 10, 2);
-        Remessa remessa = new Remessa(numeroRemessa, beneficiario, titulos, dataHoraGeracao, dataGravacao);
-
-        String remessaGerada = remessa.gerarArquivo();
-        System.out.println("Arquivo gerado:\n" + remessaGerada);
+        try{
+            RemessaGenerator.generateremessa();
+        } catch(IOException e){
+            System.out.println("Error: " + e);
+        } finally {
+            System.out.println("Finalizando");
+        }
+        
     }
 }

@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+import java.util.Random;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -34,11 +34,12 @@ public class XLSMtoPostgres {
 
     /**
      * Processa os dados do arquivo xlsx e os adiciona como registro de uma
-     * tabela.
+     * tabela (clients).
      *
      * @param filePath caminho do arquivo xlsm.
      * @param tableName nome da tabela onde serão armazenados os registros.
-     * @param amountOfData inteiro que define a qtde de itens que serão persistidos.
+     * @param amountOfData inteiro que define a qtde de itens que serao
+     * persistidos.
      * @throws IOException
      * @throws SQLException
      */
@@ -51,8 +52,14 @@ public class XLSMtoPostgres {
             for (int i = 0; i < numColumns; i++) {
                 columnNames[i] = sheet.getRow(0).getCell(i).getStringCellValue();
             }
-            //chama generateInsertQuery e cria a String de query para inserção de dados
-            String insertQuery = generateInsertQuery(tableName, columnNames);
+            //Cria a tabela de clients
+            String createdTable = createClientsTable();
+            
+            try (PreparedStatement createStmt = conn.prepareStatement(createdTable)) {
+                createStmt.execute();
+            }
+            //Chama generateInsertQuery e cria a String de para inserção de dados
+            String insertQuery = generateInsert(tableName, columnNames);
 
             try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
                 //sheet.getLastRowNum() - adquire a quantidade total de registros, colocar no lugar de amountOfData para registrar todos 22055 itens do arquivo Clientes.xlsm
@@ -60,7 +67,6 @@ public class XLSMtoPostgres {
                     XSSFRow row = sheet.getRow(i);
                     for (int j = 0; j < numColumns; j++) {
                         XSSFCell cell = row.getCell(j);
-                        System.out.println("Valores da celulas: " + cell.getRawValue());
                         if (cell == null) {
                             stmt.setNull(j + 1, java.sql.Types.NULL);
                         } else {
@@ -91,13 +97,16 @@ public class XLSMtoPostgres {
     }
 
     /**
-     * Cria a query para inserção dos dados.
-     * @param tableName nome da tabela onde serão armazenados os registros.
-     * @param columnNames nome das colunas da planilha que serão os campos da tabela.
-     * @return query de inserção dos dados.
+     * Cria o DML para inserção dos dados.
+     *
+     * @param tableName nome da tabela onde serao armazenados os registros.
+     * @param columnNames nome das colunas da planilha que serao os campos da
+     * tabela.
+     * @return DML de insercao dos dados.
      */
-    private String generateInsertQuery(String tableName, String[] columnNames) {
+    private String generateInsert(String tableName, String[] columnNames) {
         StringBuilder sb = new StringBuilder();
+        // Identifica o nome das colunas no arquivo xlsm
         sb.append("INSERT INTO ");
         sb.append(tableName);
         sb.append("(");
@@ -107,6 +116,22 @@ public class XLSMtoPostgres {
                 sb.append(", ");
             }
         }
+        sb.append("""
+            ,vencimento_remessa,
+            nome_beneficiario,
+            numero_agencia,
+            dig_verificador_agencia,
+            numero_conta_corrente,
+            numero_documento_beneficiario,
+            numero_documento_pagador,
+            endereco_pagador,
+            bairro_pagador,
+            cep_pagador,
+            cidade_pagador,
+            uf_Pagador,
+            dt_geracao
+        """);
+        // Inserindo valores
         sb.append(") VALUES (");
         for (int i = 0; i < columnNames.length; i++) {
             sb.append("?");
@@ -114,7 +139,78 @@ public class XLSMtoPostgres {
                 sb.append(", ");
             }
         }
+        //Gerando valores randomicos
+        long numeroAgencia = createRandomValue(10000, 99999);
+        long dvAgencia = createRandomValue(1,9);
+        long numContaCorrente = createRandomValue(100000,999999);
+        long numDocBeneficioario = createRandomValue(100000,999999);
+        long numDocPagador = createRandomValue(100000000, 999999999);
+        long cep = createRandomValue(10000000, 99999999);
+                
+        sb.append(",CURRENT_TIMESTAMP + INTERVAL '10 days',");
+        sb.append("'EMPRESA XYZ',");
+        sb.append(numeroAgencia + ",");
+        sb.append(dvAgencia + ",");
+        sb.append(numContaCorrente + ",");
+        sb.append(numDocBeneficioario + ",");
+        sb.append(numDocPagador + ",");
+        sb.append("'Rua asdfg',");
+        sb.append("'Bairro ABCD',");
+        sb.append(cep + ",");
+        sb.append("'Cidade ABCD',");
+        sb.append("'PR',");
+        sb.append("CURRENT_TIMESTAMP");
+        
         sb.append(")");
         return sb.toString();
+    }
+    
+    /***
+     * Cria tabela para cliente
+     * 
+     * @return DDl para criacao da tabela clients
+     */
+    private String createClientsTable() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("""
+            DROP TABLE IF EXISTS remessas;
+
+            CREATE TABLE remessas(
+                pagador VARCHAR(40),
+                valor DECIMAL(10,2),
+                CPF CHAR(14) UNIQUE PRIMARY KEY,
+                matricula INTEGER,
+                emissao TIMESTAMP,
+                vencimento_remessa TIMESTAMP,
+                nome_beneficiario VARCHAR(30),
+                numero_agencia CHAR(5),
+                dig_verificador_agencia CHAR(1),
+                numero_conta_corrente VARCHAR(12),
+                numero_documento_beneficiario VARCHAR(15),
+                numero_documento_pagador VARCHAR(11),
+                endereco_pagador VARCHAR(40),
+                bairro_pagador VARCHAR(40),
+                cep_pagador CHAR(8),
+                cidade_pagador VARCHAR(15),
+                uf_Pagador CHAR(2),
+                dt_geracao TIMESTAMP
+            );
+        """);
+        return sb.toString();
+    }
+
+    /**
+     * Cria um valor randomico entre um limite inicial e final.
+     *
+     * @param initialValue Valor inicial
+     * @param finalValue Valor final
+     * @return Um inteiro randomico entre initialvalue e finalValue (inclusos)
+     */
+    private long createRandomValue(long initialValue, long finalValue) {
+        if (finalValue < initialValue) {
+            throw new IllegalArgumentException("finalValue deve ser maior que InitialValue");
+        }
+        Random random = new Random();
+        return random.nextLong((finalValue - initialValue) + 1) + initialValue;
     }
 }
