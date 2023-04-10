@@ -1,73 +1,48 @@
-import fs from "fs";
-import readline from "readline";
-import pkg from 'pg';
-const { Pool } = pkg;
+const fs = require('fs');
+const path = require('path');
 
-// Cria a conexão com o banco de dados
-const pool = new Pool({
-    user: "admin",
-    database: "postgresDBReader",
-    port: 5433,
-    host: "localhost",
-    password: "123456",
-});
+const directoryPath = path.join(__dirname, '../hotFolder');
 
-// Abre o arquivo para leitura
-const rl = readline.createInterface({
-    input: fs.createReadStream('../hotFolder/remessa.cnab240')
-});
-
-// Define a função para processar cada linha
-const processLine = async (line) => {
-    const registro = line.substring(7, 8);
-
-    if (registro === '0') {
-        // Registro Header
-        const codigoBanco = line.substring(0, 3);
-        const tipoRegistro = line.substring(7, 8);
-        const numeroRemessa = line.substring(8, 13);
-        const dataGeracao = line.substring(143, 151);
-        const horaGeracao = line.substring(151, 157);
-        const densidadeGravacao = line.substring(157, 160);
-        const reservadoBanco = line.substring(160, 392);
-        const reservadoEmpresa = line.substring(392);
-
-        // Insere os dados no banco de dados
-        await pool.query(
-            `INSERT INTO remessa_header 
-            (codigo_banco, tipo_registro, numero_remessa, data_geracao, hora_geracao, densidade_gravacao, reservado_banco, reservado_empresa)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-            [codigoBanco, tipoRegistro, numeroRemessa, dataGeracao, horaGeracao, densidadeGravacao, reservadoBanco, reservadoEmpresa]
-        );
-    } else if (registro === '1') {
-        // Registro Detalhe
-        const codigoBanco = line.substring(0, 3);
-        const tipoRegistro = line.substring(7, 8);
-        const numeroDocumento = line.substring(38, 62);
-        const valor = line.substring(77, 92);
-        const vencimento = line.substring(146, 154);
-
-        // Insere os dados no banco de dados
-        await pool.query(
-            `INSERT INTO remessa_detalhe (codigo_banco, tipo_registro, numero_documento, valor, vencimento) VALUES ($1, $2, $3, $4, $5)`,
-            [codigoBanco, tipoRegistro, numeroDocumento, valor, vencimento]
-        );
-    } else if (registro === '9') {
-        // Registro Trailer
-        const codigoBanco = line.substring(0, 3);
-        const tipoRegistro = line.substring(7, 8);
-        const quantidadeRegistros = line.substring(17, 25);
-        const valorTotal = line.substring(253, 266);
-
-        // Insere os dados no banco de dados
-        await pool.query(
-            `INSERT INTO remessa_trailer (codigo_banco, tipo_registro, quantidade_registros, valor_total) VALUES ($1, $2, $3, $4)`,
-            [codigoBanco, tipoRegistro, quantidadeRegistros, valorTotal]
-        );
+fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+        return console.log(`Erro ao ler diretório: ${err}`);
     }
-};
 
-// Lê cada linha do arquivo e processa
-rl.on('line', (line) => {
-    processLine(line);
+    const filteredFiles = files.filter((file) =>
+        fs.statSync(path.join(directoryPath, file)).isFile()
+    );
+
+    filteredFiles.forEach((file) => {
+        // Adquirindo arquivo e linhas das remessas
+        const filePath = path.join(directoryPath, file);
+        const arquivo = fs.readFileSync(filePath, 'utf-8');
+        const linhas = arquivo.split('\n');
+        // "Extraindo" valores das remessas
+        const dia = linhas[0].slice(143, 145);
+        const mes = linhas[0].slice(145, 147);
+        const ano = linhas[0].slice(147, 151);
+        const preco = linhas[2].slice(86, 98);
+        const centavos = linhas[2].slice(98, 100);
+        const diaVencimento = linhas[2].slice(77, 79);
+        const mesVencimento = linhas[2].slice(79, 81);
+        const anoVencimento = linhas[2].slice(81, 85);
+        // const diaVencimento = linhas[1].slice(191, 193);
+        // const mesVencimento = linhas[1].slice(193, 195);
+        // const anoVencimento = linhas[1].slice(195, 199);
+        const nomePagador = linhas[3].slice(33, 73);
+        const nomeBeneficiario = linhas[0].slice(72, 102);
+        const valorTitulo = Number(`${preco}.${centavos}`);
+
+        const dadosRemessa = {
+            remessa: file,
+            dataBoleto: `${dia}/${mes}/${ano}`,
+            nomeBeneficiario: nomeBeneficiario.trimEnd(),
+            nomePagador: nomePagador.trimEnd(),
+            dataGeracao: `${dia}/${mes}/${ano}`.trimEnd(),
+            dataVencimento: `${diaVencimento}/${mesVencimento}/${anoVencimento}`.trimEnd(),
+            valor: `R$ ${valorTitulo}`
+        };
+
+        console.log(dadosRemessa);
+    });
 });
