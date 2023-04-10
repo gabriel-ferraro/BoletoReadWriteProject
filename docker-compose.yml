@@ -1,7 +1,7 @@
-version: '3.8'
+version: '3'
 
 services:
-  postgresWrite:
+  postgresWriter:
     image: postgres:latest
     container_name: postgresDBWriter
     environment:
@@ -11,14 +11,27 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    networks: 
+      - remessaNetwork
 
-  postgresRead:
-    image: postgres:latest
-    container_name: postgresDBReader
+  remessaAPI:
+    build: "./remessaAPI"
+    container_name: remessaAPI
+    depends_on: 
+      - postgresWriter
+    networks:
+      - remessaNetwork
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: postgresDBReader
+      - PORT=8080
+      - API_SECRET=SECRET
+      - DB_HOST=postgresDB
+      - DB_NAME=postgres
+      - DB_USER=admin
+      - DB_PASSWORD=12345
+      - DB_PORT=5432
     ports:
-      - "5433:5432"
-    restart: always
+      - "8080:8080"
+
+networks:
+  remessaNetwork:
+    driver: bridge
