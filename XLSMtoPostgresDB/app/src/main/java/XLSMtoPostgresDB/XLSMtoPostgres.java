@@ -176,9 +176,10 @@ public class XLSMtoPostgres {
             DROP TABLE IF EXISTS remessas;
 
             CREATE TABLE remessas(
+                id SERIAL PRIMARY KEY,
                 pagador VARCHAR(40),
                 valor DECIMAL(10,2),
-                CPF CHAR(14) UNIQUE PRIMARY KEY,
+                CPF CHAR(14) UNIQUE,
                 matricula INTEGER,
                 emissao TIMESTAMP,
                 vencimento_remessa TIMESTAMP,
