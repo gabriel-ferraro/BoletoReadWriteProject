@@ -9,5 +9,4 @@ public class RemessaApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(RemessaApiApplication.class, args);
     }
-
 }

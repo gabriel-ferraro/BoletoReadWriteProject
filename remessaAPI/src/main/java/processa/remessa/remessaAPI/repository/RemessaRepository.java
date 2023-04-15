@@ -5,10 +5,8 @@ import org.springframework.stereotype.Repository;
 import processa.remessa.remessaAPI.model.Remessa;
 
 /**
- *
+ * Repository de remessa
  * @author Gabriel Ferraro
  */
 @Repository
-public interface RemessaRepository extends JpaRepository<Remessa, Long> {
-    
-}
+public interface RemessaRepository extends JpaRepository<Remessa, Long> {}

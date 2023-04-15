@@ -7,7 +7,7 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Iniciando");
         try{
-            RemessaGenerator.generateremessa();
+            RemessaGenerator.generateRemessa();
         } catch(IOException e){
             System.out.println("Error: " + e);
         } finally {

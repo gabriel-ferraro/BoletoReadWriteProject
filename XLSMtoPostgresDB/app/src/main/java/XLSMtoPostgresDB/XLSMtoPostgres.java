@@ -17,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 /**
  * Classe para converter dados de um arquivo xlsm e inseri-los como registros em
  * uma tabela de um banco de dados PostgresSQL
- *
  * @author Gabriel Ferraro
  */
 public class XLSMtoPostgres {
@@ -45,24 +44,24 @@ public class XLSMtoPostgres {
      */
     public void convert(String filePath, String tableName, int amountOfData) throws IOException, SQLException {
         try (Connection conn = DriverManager.getConnection(url, user, password); FileInputStream fis = new FileInputStream(filePath); XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
-            //Carrega o nome da planilha
+            // Carrega o nome da planilha
             XSSFSheet sheet = workbook.getSheetAt(0);
             int numColumns = sheet.getRow(0).getLastCellNum();
             String[] columnNames = new String[numColumns];
             for (int i = 0; i < numColumns; i++) {
                 columnNames[i] = sheet.getRow(0).getCell(i).getStringCellValue();
             }
-            //Cria a tabela de clients
+            // Cria a tabela de clients
             String createdTable = createClientsTable();
             
             try (PreparedStatement createStmt = conn.prepareStatement(createdTable)) {
                 createStmt.execute();
             }
-            //Chama generateInsertQuery e cria a String de para inserção de dados
+            // Chama generateInsertQuery e cria a String de para inserção de dados
             String insertQuery = generateInsert(tableName, columnNames);
 
             try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
-                //sheet.getLastRowNum() - adquire a quantidade total de registros, colocar no lugar de amountOfData para registrar todos 22055 itens do arquivo Clientes.xlsm
+                // sheet.getLastRowNum() - adquire a quantidade total de registros, colocar no lugar de amountOfData para registrar todos 22055 itens do arquivo Clientes.xlsm
                 for (int i = 1; i <= amountOfData; i++) {
                     XSSFRow row = sheet.getRow(i);
                     for (int j = 0; j < numColumns; j++) {
@@ -98,7 +97,6 @@ public class XLSMtoPostgres {
 
     /**
      * Cria o DML para inserção dos dados.
-     *
      * @param tableName nome da tabela onde serao armazenados os registros.
      * @param columnNames nome das colunas da planilha que serao os campos da
      * tabela.
@@ -139,7 +137,7 @@ public class XLSMtoPostgres {
                 sb.append(", ");
             }
         }
-        //Gerando valores randomicos
+        // Gerando valores randomicos
         long numeroAgencia = createRandomValue(10000, 99999);
         long dvAgencia = createRandomValue(1,9);
         long numContaCorrente = createRandomValue(100000,999999);
@@ -167,7 +165,6 @@ public class XLSMtoPostgres {
     
     /***
      * Cria tabela para cliente
-     * 
      * @return DDl para criacao da tabela clients
      */
     private String createClientsTable() {
@@ -202,7 +199,6 @@ public class XLSMtoPostgres {
 
     /**
      * Cria um valor randomico entre um limite inicial e final.
-     *
      * @param initialValue Valor inicial
      * @param finalValue Valor final
      * @return Um inteiro randomico entre initialvalue e finalValue (inclusos)

@@ -12,7 +12,7 @@ import net.anschau.cnab.caixa.cnab240.Remessa;
 import net.anschau.cnab.caixa.cnab240.Titulo;
 
 /**
- *
+ * Builder para remssa.
  * @author Gabriel Ferraro
  */
 @Getter
@@ -44,6 +44,10 @@ public class RemessaBuilder {
     private int minutosGeracao;
     private int segundosGeracao;
     
+    /**
+     * Constroi e retorna uma objeto remessa.
+     * @return Objeto de remessa.
+     */
     public String buildRemessa() {
         Beneficiario beneficiario = new Beneficiario(
             nomeBeneficiario,

@@ -11,14 +11,18 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 /**
- *
+ * Gerador da remessa
  * @author Gabriel Ferraro
  */
 public class RemessaGenerator {
 
-    public static void generateremessa() throws IOException {
+    /**
+     * Extrai dados do BD e registra remessas cnab no hotfolder
+     * @throws IOException 
+     */
+    public static void generateRemessa() throws IOException {
         // Configurações de conexao ao banco de dados
-        String url = "jdbc:postgresql://localhost:5432/postgresDBWriter";
+        String url = "jdbc:postgresql://localhost:5432/postgres";
         String user = "admin";
         String password = "123456";
         // Consulta SQL para obter os dados da remessa
