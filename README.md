@@ -2,7 +2,7 @@
 
 Projeto desenvolvido na disciplina de integração de sistemas.
 
-Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, nesse projeto serão usados:
+Com o objetivo de praticar diferentes técnicas de integração entre sistemas, nesse projeto serão usados:
 
 <b>[hot folder](https://www.ibm.com/docs/en/ahts/4.0?topic=folders-setting-up-hot)</b> para que uma aplicação Java possa fazer a escrita de arquivos como remessa de cobrança bancária no layout CNAB240 para Caixa Economica Federal, outra aplicação em Node fará a leitura do arquivo no hot folder.
 
@@ -36,8 +36,8 @@ Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, n
 
 Após subir a aplicação, é possível visualizar a interface de uso da api via especificação OpenAPI ou Swagger-ui nas seguintes URLs:
 
-OpenAPI: http://localhost:8080/v3/api-docs
-Swagger-ui: http://localhost:8080/swagger-ui/index.html
+ - OpenAPI: http://localhost:8080/v3/api-docs
+ - Swagger-ui: http://localhost:8080/swagger-ui/index.html
 
 ### Enpoints da API
 
