@@ -10,41 +10,35 @@ Com o ojetivo de praticar diferentes técnicas de integração entre sistemas, n
 
 ## Tecnologias
 
-<details>
-  <summary><b>Clique para expandir</b></summary>
-  
   * Java
   * Node
   * Docker
   * Manipulação de arquivos com a técnica hot folder
   * API rest com especificação Open API
   * Diversas bibliotecas
-  
-</details>
 
 ## Uso da escrita e leitura no hotFolder
 
-<details>
-  <summary><b>Clique para expandir</b></summary>
-  
-  - Inicialize o docker
-  - Execute [runEscrita.bat](runEscrita.bat)
-  - Execute [runLeitura.bat](runLeitura.bat)
+  - Inicialize o docker;
+  - Execute [runEscrita.bat](runEscrita.bat);
+  - Execute [runLeitura.bat](runLeitura.bat).
 
   Alternativamente:
   - Inicialize o docker;
   - Execute o comando "docker compose up --build" no diretório raiz do projeto;
   - Execute a aplicação [XLSMtoPostgresDB](/XLSMtoPostgresDB/app/src/main/java/XLSMtoPostgresDB/App.java) para persistir os dados de escrita na base de dados postgres;
-  - Execute a aplicação [BoletoWriterJAVA](/boletoWriterJAVA/app/src/main/java/boletoWriterJAVA/App.java) para obter os registros da base de dados como remessas cnab240 no [hotFolder](hotFolder)
+  - Execute a aplicação [BoletoWriterJAVA](/boletoWriterJAVA/app/src/main/java/boletoWriterJAVA/App.java) para obter os registros da base de dados como remessas cnab240 no [hotFolder](hotFolder);
+  - Acesse a aplicação rest em localhost:8080; veja seus enpoints abaixo.
   
   É necessário seguir todos os passos para conseguir o resultado desejado, já que diferentes aplicações estarão atuando em conjunto para efetuar ações como persistência de dados, leitura e escrita.
-  
-</details>
 
 ## Uso da API rest
 
-<details>
-  <summary><b>Clique para expandir</b></summary>
+Após subir a aplicação, é possível visualizar a interface de uso da api via especificação OpenAPI ou Swagger-ui nas seguintes URLs:
 
-  - to do;
-</details>
+OpenAPI: http://localhost:8080/v3/api-docs
+Swagger-ui: http://localhost:8080/swagger-ui/index.html
+
+### Enpoints da API
+
+![Especificação OpenAPI com swagger-ui](./interfaceAPI.png)
