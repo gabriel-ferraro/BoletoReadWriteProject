@@ -41,4 +41,4 @@ Swagger-ui: http://localhost:8080/swagger-ui/index.html
 
 ### Enpoints da API
 
-![Especificação OpenAPI com swagger-ui](./interfaceAPI.png)
+![plot](./interfaceAPI.png)
