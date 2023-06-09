@@ -34,15 +34,14 @@ public class XLSMtoPostgres {
     /**
      * Processa os dados do arquivo xlsm e os adiciona como registro de uma
      * tabela (clients).
-     *
      * @param filePath caminho do arquivo xlsm.
      * @param tableName nome da tabela onde serão armazenados os registros.
-     * @param amountOfData inteiro que define a qtde de itens que serao
-     * persistidos.
+     * @param initialValue valor inicial a para percorrer remessas.
+     * @param maxValuevalor "até" para percorrer remessas.
      * @throws IOException
      * @throws SQLException
      */
-    public void convert(String filePath, String tableName, int amountOfData) throws IOException, SQLException {
+    public void convert(String filePath, String tableName, int initialValue, int finalValue) throws IOException, SQLException {
         try (Connection conn = DriverManager.getConnection(url, user, password); FileInputStream fis = new FileInputStream(filePath); XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
             // Carrega o nome da planilha
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -62,7 +61,7 @@ public class XLSMtoPostgres {
 
             try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
                 // sheet.getLastRowNum() - adquire a quantidade total de registros, colocar no lugar de amountOfData para registrar todos 22055 itens do arquivo Clientes.xlsm
-                for (int i = 1; i <= amountOfData; i++) {
+                for (int i = initialValue; i <= finalValue; i++) {
                     XSSFRow row = sheet.getRow(i);
                     for (int j = 0; j < numColumns; j++) {
                         XSSFCell cell = row.getCell(j);
@@ -164,15 +163,15 @@ public class XLSMtoPostgres {
     }
     
     /***
-     * Cria tabela para cliente
-     * @return DDl para criacao da tabela clients
+     * Cria tabela para remessas.
+     * @return DDl para criacao da tabela remmitance.
      */
-    private String createClientsTable() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("""
-            DROP TABLE IF EXISTS remessas;
+    private String createRemmitanceTable() {
+        return 
+                """
+            DROP TABLE IF EXISTS remmitance;
 
-            CREATE TABLE remessas(
+            CREATE TABLE remmitance(
                 id SERIAL PRIMARY KEY,
                 pagador VARCHAR(40),
                 valor DECIMAL(10,2),
@@ -191,23 +190,29 @@ public class XLSMtoPostgres {
                 cep_pagador CHAR(8),
                 cidade_pagador VARCHAR(15),
                 uf_Pagador CHAR(2),
-                dt_geracao TIMESTAMP
+                dt_geracao TIMESTAMP,
+                compensado BOOLEAN
             );
-        """);
-        return sb.toString();
+        """;
     }
+    
+    /**
+     * Insere os dados da remessa no banco de dados.
+     */
+//    private void insertRegisterInDB(Remessa remessa) {
+//        
+//    }
 
     /**
      * Cria um valor randomico entre um limite inicial e final.
-     * @param initialValue Valor inicial
-     * @param finalValue Valor final
-     * @return Um inteiro randomico entre initialvalue e finalValue (inclusos)
+     * @param minValue Valor inicial.
+     * @param maxValue Valor final.
+     * @return Um inteiro randomico entre minvalue e maxValue(inclusos).
      */
-    private long createRandomValue(long initialValue, long finalValue) {
-        if (finalValue < initialValue) {
-            throw new IllegalArgumentException("finalValue deve ser maior que InitialValue");
+    private long createRandomValue(long minValue, long maxValue) {
+        if (maxValue< minValue) {
+            throw new IllegalArgumentException("O valor final deve ser maior que valor inicial");
         }
-        Random random = new Random();
-        return random.nextLong((finalValue - initialValue) + 1) + initialValue;
+        return new Random().nextLong((maxValue - minValue) + 1) + minValue;
     }
 }

@@ -19,21 +19,19 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
-
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
-    
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
-    
     // Importa a biblioteca Apache POI
     // https://mvnrepository.com/artifact/org.apache.poi/poi
     implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
-
     // Importa a biblioteca JDBC do PostgreSQL
     implementation 'org.postgresql:postgresql:42.3.1'
+    // Importa bilbioteca rabbitmq
+    implementation 'com.rabbitmq:amqp-client:5.14.0'
 }
 
 application {

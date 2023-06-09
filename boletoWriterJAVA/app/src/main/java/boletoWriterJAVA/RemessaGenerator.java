@@ -26,7 +26,7 @@ public class RemessaGenerator {
         String user = "admin";
         String password = "123456";
         // Consulta SQL para obter os dados da remessa
-        String sql = "SELECT * FROM remessas";
+        String sql = "SELECT * FROM remessas WHERE notCompensado";
 
         try {
             // Conexão ao banco de dados
