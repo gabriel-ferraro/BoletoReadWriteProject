@@ -34,10 +34,10 @@ public class RemittanceService {
 
     public Remittance findById(Integer id) {
         return RemittanceRepository.findById(id)
-                .orElseThrow(()
-                        -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Remittance not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Remittance not found")
+                );
     }
 
     public List<Remittance> getCompensatedRemittances() {
@@ -48,24 +48,42 @@ public class RemittanceService {
         return RemittanceRepository.getNonCompensatedRemittances();
     }
 
-    public void createRemittances(Integer amount) {
+    /**
+     * Cria remessas no hotFolder, no BD e se flag de controle verdaderia, envia
+     * requisicao para a aplicacao de compensacao ser notificada com a criacao
+     * da remessa.
+     *
+     * @param amount Qtt de remessas a serem criadas.
+     * @param requestProcessRemittances Flag para identificar se a aplicacao de
+     * compensacao deve ser notificada com a criacao da remessa.
+     */
+    public void createRemittances(Integer amount, Boolean requestProcessRemittances) {
         try {
-            cnabWriter.generateRemittances(amount, null, null);
+            cnabWriter.generateRemittances(amount, null, null, requestProcessRemittances);
         } catch (IOException | TimeoutException ex) {
-            Logger.getLogger(RemittanceService.class.getName()).log(Level.SEVERE, "Excecao ocorreu ao processar remessas", ex);
+            Logger.getLogger(RemittanceService.class.getName()).log(
+                    Level.SEVERE,
+                    "Excecao ocorreu ao processar remessas. requestToProcessRemittances: " + requestProcessRemittances,
+                    ex
+            );
         }
     }
 
+    /**
+     * Metodo para pedir a ccmpensacao de remessas que ainda nao foram
+     * compensadas.
+     *
+     * @param amount Qtt de remessas.
+     */
     public void requestToCompensateRemittances(Integer amount) {
         try {
-            this.msgSender.requestToCompensateRemittances(amount, null);
+            msgSender.requestToCompensateRemittances(amount, null);
         } catch (IOException | TimeoutException ex) {
-            Logger.getLogger(RemittanceService.class.getName()).log(Level.SEVERE, "Excecao ocorreu ao enviar requisicao para aplicacao de compensacao", ex);
+            Logger.getLogger(RemittanceService.class.getName()).log(
+                    Level.SEVERE,
+                    "Excecao ocorreu ao enviar requisicao para aplicacao de compensacao",
+                    ex
+            );
         }
-    }
-
-    public void createAndCompensateRemittances(Integer amount) {
-        createRemittances(amount);
-        requestToCompensateRemittances(amount);
     }
 }

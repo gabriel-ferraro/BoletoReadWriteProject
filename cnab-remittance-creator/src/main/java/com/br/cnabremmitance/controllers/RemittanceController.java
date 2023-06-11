@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("remittances")
 public class RemittanceController {
 
-    private final RemittanceService remittanceService;
+    private RemittanceService remittanceService;
 
     @Autowired
     public RemittanceController(RemittanceService remittanceService) {
@@ -77,7 +77,7 @@ public class RemittanceController {
     @ApiResponse(responseCode = "500", description = "Excecao ocorreu ao tentar processar remessas.")
     @PostMapping(path = "/{amountToCreate}")
     public ResponseEntity<String> createRemittances(@PathVariable("amountToCreate") Integer amountToCreate) {
-        remittanceService.createRemittances(amountToCreate);
+        remittanceService.createRemittances(amountToCreate, false);
         return ResponseEntity.ok().body(amountToCreate + " remessas criadas.");
     }
     
@@ -87,7 +87,7 @@ public class RemittanceController {
     @ApiResponse(responseCode = "500", description = "Excecao ocorreu ao tentar processar remessas/realizar requisicao.")
     @PostMapping(path = "/create-and-compensate/{amountToCreate}")
     public ResponseEntity<String> createRemittancesAndRequestCompensation(@PathVariable("amountToCreate") Integer amountToCreate) {
-        remittanceService.createAndCompensateRemittances(amountToCreate);
+        remittanceService.createRemittances(amountToCreate, true);
         return ResponseEntity.ok().body(amountToCreate + " remessas criadas.");
     }
 }

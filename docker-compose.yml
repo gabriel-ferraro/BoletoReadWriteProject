@@ -11,26 +11,30 @@ services:
     ports:
       - "5432:5432"
     restart: always
-    networks: 
-      - remessaNetwork
+    # networks: 
+    #   - remessaNetwork
 
-  remessa_api:
-    build: "./remessaAPI"
-    container_name: remessaApi
-    depends_on: 
-      - postgresDBWriter
-    networks:
-      - remessaNetwork
-    environment:
-      - PORT=8080
-      - DB_HOST=postgresDBWriter
-      - DB_NAME=postgres
-      - DB_USER=admin
-      - DB_PASSWORD=123456
-      - DB_PORT=5432
-    ports:
-      - "8080:8080"
+#   remittance-processor:
+#     build: "./remessaAPI"
+#     container_name: remessaApi
+#     depends_on: 
+#       - postgresDBWriter
+#     networks:
+#       - remessaNetwork
+#     environment:
+#       - PORT=8080
+#       - DB_HOST=postgresDBWriter
+#       - DB_NAME=postgres
+#       - DB_USER=admin
+#       - DB_PASSWORD=123456
+#       - DB_PORT=5432
+#     ports:
+#       - "8080:8080"
 
-networks:
-  remessaNetwork:
-    driver: bridge
+#   cnab-remittance:
+
+
+
+# networks:
+#   remessaNetwork:
+#     driver: bridge

@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CnabRemittanceApplication {
+public class CnabRemittanceCreator {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CnabRemittanceApplication.class, args);
+		SpringApplication.run(CnabRemittanceCreator.class, args);
 	}
 
 }
