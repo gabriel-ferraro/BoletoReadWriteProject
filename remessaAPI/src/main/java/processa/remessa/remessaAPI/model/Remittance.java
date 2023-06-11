@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
  * @author Gabriel Ferraro
  */
 @Entity
-@Table(name = "remessas")
+@Table(name = "remittance")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Remessa {
+public class Remittance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

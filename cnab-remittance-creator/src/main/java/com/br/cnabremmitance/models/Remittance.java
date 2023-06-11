@@ -1,112 +1,47 @@
 package com.br.cnabremmitance.models;
 
-import com.google.common.collect.ImmutableList;
-import java.time.LocalDate;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.anschau.cnab.caixa.cnab240.Beneficiario;
-import net.anschau.cnab.caixa.cnab240.Pagador;
-import net.anschau.cnab.caixa.cnab240.Remessa;
-import net.anschau.cnab.caixa.cnab240.Titulo;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "remittance")
 public class Remittance {
-    private String nomeBeneficiario;
-    private String numeroAgencia;
-    private int digVerificadorAgencia;
-    private String numeroContaCorrente;
-    private String numeroDocumentoBeneficiario;
-    private String nomePagador;
-    private String numeroDocumentoPagador;
-    private String enderecoPagado;
-    private String bairroPagador;
-    private String cepPagador;
-    private String cidadePagador;
-    private String ufPagador;
-    private int anoEmissao;
-    private int mesEmissao;
-    private int diaEmissao;
-    private int anoVencimento;
-    private int mesVencimento;
-    private int diaVencimento;
-    private double valorTitulo;
-    private int anoGeracao;
-    private int mesGeracao;
-    private int diaDoMesGeracao;
-    private int horaGeracao;
-    private int minutosGeracao;
-    private int segundosGeracao;
     
-     /**
-     * Constroi e retorna uma objeto remessa.
-     * @return Objeto de remessa.
-     */
-    public String buildRemessa() {
-        Beneficiario beneficiario = new Beneficiario(
-            nomeBeneficiario,
-            numeroAgencia,
-            digVerificadorAgencia,
-            numeroContaCorrente,
-            numeroDocumentoBeneficiario
-        );
-
-        Pagador pagador = new Pagador(
-            nomePagador,
-            numeroDocumentoPagador,
-            enderecoPagado,
-            bairroPagador,
-            cepPagador,
-            cidadePagador,
-            ufPagador
-        );
-
-        LocalDate emissao = LocalDate.of(
-            anoEmissao,
-            mesEmissao,
-            diaEmissao
-        );
-
-        LocalDate vencimento = LocalDate.of(
-            anoVencimento,
-            mesVencimento,
-            diaVencimento
-        );
-
-        Titulo titulo = new Titulo(
-            valorTitulo,
-            emissao,
-            vencimento,
-            3,
-            3,
-            pagador
-        );
-
-        List<Titulo> titulos = ImmutableList.of(titulo);
-
-        LocalDateTime dataHoraGeracao = LocalDateTime.of(
-            anoGeracao,
-            mesGeracao,
-            diaDoMesGeracao,
-            horaGeracao,
-            minutosGeracao,
-            segundosGeracao
-        );
-
-        LocalDate dataGravacao = LocalDate.now();
-        
-        int numeroRemessa = 1;
-
-        Remessa remessaCriada = new Remessa(
-            numeroRemessa,
-            beneficiario,
-            titulos,
-            dataHoraGeracao,
-            dataGravacao
-        );
-
-        return remessaCriada.gerarArquivo();
+    public Remittance(String nomePagador, Double valorTitulo, String cpf, String matricula, LocalDateTime dataHoraGeracao) {
+        this.payerName = nomePagador;
+        this.value = valorTitulo;
+        this.CPF = cpf;
+        this.matricula = matricula;
+        this.emissionDate = dataHoraGeracao;
+        this.isCompensated = false;
     }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(nullable = false)
+    private String payerName;
+    @Column(nullable = false)
+    private Double value;
+    @Column(nullable = false)
+    private String CPF;
+    @Column(nullable = false)
+    private String matricula;
+    @Column(nullable = false)
+    private LocalDateTime emissionDate;
+    @Column(nullable = false)
+    private Boolean isCompensated;
 }
