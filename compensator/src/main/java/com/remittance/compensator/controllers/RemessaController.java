@@ -50,7 +50,7 @@ public class RemessaController {
             description = "Realiza o retorno uma remessa na URI.")
     @ApiResponse(responseCode = "200", description = "Remessas retornada.")
     @ApiResponse(responseCode = "404", description = "Remessas não encontrada.")
-    public ResponseEntity<Remittance> findById(@PathVariable Long id) {
+    public ResponseEntity<Remittance> findById(@PathVariable Integer id) {
         return ResponseEntity.ok().body(remessaService.getRemessaById(id));
     }
 
@@ -71,7 +71,7 @@ public class RemessaController {
     @ApiResponse(responseCode = "400", description = "Erro por valor invalido inserido.")
     public String compensaBoleto(@RequestBody CompensacaoRequest compensacaoRequest) {
         // adquirindo remessa persistida no BD pelo id
-        Remittance remessa = remessaService.getRemessaById(Long.valueOf(compensacaoRequest.getId()));
+        Remittance remessa = remessaService.getRemessaById(Integer.valueOf(compensacaoRequest.getId()));
 
         // mensagem de retorno
         String compensacao;
