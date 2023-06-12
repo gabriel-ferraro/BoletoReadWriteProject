@@ -10,7 +10,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.remittance.compensator.models.Remittance;
 import com.remittance.compensator.repositories.RemittanceRepository;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +24,7 @@ public class Subscriber {
 
     // Dados para conexao rabbitMQ
     private static final String HOST = "localhost";
-    private static final int RABBIT_PORT = 32790;
+    private static final int RABBIT_PORT = 5672;
     // Fila utilizada entre aplicação geradora de remessas (publisher) e aplicação que compensa remessas (subscriber).
     private static final String QUEUE_NAME = "generate_remittance_queue";
     // Repository para checar dados da remessa.
@@ -78,13 +78,13 @@ public class Subscriber {
     }
 
     public static void compensateRemittance(Integer remittanceId) throws IOException, TimeoutException {
-        // Adquire a remessa do BD
+        // Adquire a remessa do BD.
         Remittance remittance = remittanceRepository.findById(remittanceId)
                 .orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 "Remittance not found"));
-        // Se a data da remessa enviada nao esta vencida (antes de 17/06/2019).
-        if (remittance.getVencimentoRemessa().after(new Date(2019, 5, 17))) {
+        // Se a data da remessa enviada nao esta vencida (antes de 18/06/2019).
+        if (remittance.getEmissionDate().isBefore(LocalDate.of(2019, 6, 18))) {
             //Envia mensagem para aplicacao C fazer a baixa da remssa.
             PublishToCompensate.compensate(remittanceId);
         } else {
@@ -92,8 +92,8 @@ public class Subscriber {
             System.out.println(
                     "Remessa vencida! nao pode ser compensada - ID: "
                     + remittance.getId()
-                    + "Vencida em: "
-                    + remittance.getVencimentoRemessa()
+                    + " - Emitida em: "
+                    + remittance.getEmissionDate()
             );
         }
     }

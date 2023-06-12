@@ -61,14 +61,14 @@ public class RemittanceController {
         return ResponseEntity.ok().body(remittanceService.getNonCompensatedRemittances());
     }
 
-    @Operation(summary = "Faz requisicao para que remessas sejam compensadas.",
-            description = "Faz requisicao para que quantidade de remessas sejam compensadas pela aplicacao listener via mensageria.")
+    @Operation(summary = "Faz requisicao para que remessa seja compensada.",
+            description = "Faz requisicao para que a remessa indicada seja compensada pela aplicacao listener via mensageria.")
     @ApiResponse(responseCode = "200", description = "Requsicao enviada com sucesso.")
     @ApiResponse(responseCode = "500", description = "Requsicao nao pode ser enviada com sucesso.")
-    @PutMapping(path = "/{amountToProcess}")
-    public ResponseEntity<String> requestToCompensateRemittances(@PathVariable("amountToProcess") Integer amountToProcess) {
-        remittanceService.requestToCompensateRemittances(amountToProcess);
-        return ResponseEntity.ok().body("requisicao para processar " + amountToProcess + " remessas enviada.");
+    @PutMapping(path = "/{remittanceId}")
+    public ResponseEntity<String> requestToCompensateRemittance(@PathVariable("remittanceId") Integer remittanceId) {
+        remittanceService.requestToCompensateRemittances(remittanceId);
+        return ResponseEntity.ok().body("Enviada requisicao para processar remessa de ID: " + remittanceId);
     }
 
     @Operation(summary = "Cria remessas CNAB240 localmente e persiste remessa como registro no BD.",
@@ -80,7 +80,7 @@ public class RemittanceController {
         remittanceService.createRemittances(amountToCreate, false);
         return ResponseEntity.ok().body(amountToCreate + " remessas criadas.");
     }
-    
+
     @Operation(summary = "Cria remessas CNAB240 e faz a requisicao para compensacao das mesmas.",
             description = "Cria remessas localmente no hotFolder e salva no BD. Faz requisicao para API de compensacao compensar essas remessas")
     @ApiResponse(responseCode = "200", description = "Remessas criadas e requsicao enviada.")

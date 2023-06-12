@@ -152,7 +152,7 @@ public class CnabWriter {
             // Se flag verdadeira.
             if (compensateRemittances == true) {
                 // Envia mensagem para aplicacao de compensacao compensar remessa.
-                msgSender.requestToCompensateRemittances(rowIndex, null);
+                msgSender.requestToCompensateRemittance(rowIndex, null);
             }
         }
     }

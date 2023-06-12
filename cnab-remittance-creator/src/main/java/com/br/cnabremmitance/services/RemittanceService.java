@@ -70,14 +70,14 @@ public class RemittanceService {
     }
 
     /**
-     * Metodo para pedir a ccmpensacao de remessas que ainda nao foram
-     * compensadas.
+     * Metodo para pedir a ccmpensacao de remessa que ainda nao foi
+     * compensada.
      *
-     * @param amount Qtt de remessas.
+     * @param remittanceId Qtt de remessas.
      */
-    public void requestToCompensateRemittances(Integer amount) {
+    public void requestToCompensateRemittances(Integer remittanceId) {
         try {
-            msgSender.requestToCompensateRemittances(amount, null);
+            msgSender.requestToCompensateRemittance(remittanceId, null);
         } catch (IOException | TimeoutException ex) {
             Logger.getLogger(RemittanceService.class.getName()).log(
                     Level.SEVERE,

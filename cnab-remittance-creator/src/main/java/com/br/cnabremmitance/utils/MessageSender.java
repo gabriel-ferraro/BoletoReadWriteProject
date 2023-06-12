@@ -12,7 +12,7 @@ public class MessageSender {
 
     // Dados para conexao rabbitMQ
     private static final String HOST = "localhost";
-    private static final int RABBIT_PORT = 32790;
+    private static final int RABBIT_PORT = 5672;
     // Fila utilizada entre aplicação geradora de remessas (publisher) e aplicação que compensa remessas (subscriber).
     private static final String QUEUE_NAME = "generate_remittance_queue";
 
@@ -24,7 +24,7 @@ public class MessageSender {
      * @throws java.io.IOException
      * @throws java.util.concurrent.TimeoutException
      */
-    public void requestToCompensateRemittances(Integer remittanceId, String queueName) throws IOException, TimeoutException {
+    public void requestToCompensateRemittance(Integer remittanceId, String queueName) throws IOException, TimeoutException {
         // Determinando nome da fila
         String queue = queueName == null ? QUEUE_NAME : queueName;
         // Faz conexao com rabbitMQ.

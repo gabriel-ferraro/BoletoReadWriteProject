@@ -9,7 +9,7 @@ import java.util.concurrent.TimeoutException;
 class PublishToCompensate {
 
     private static final String HOST = "localhost";
-    private static final int RABBIT_PORT = 32790;
+    private static final int RABBIT_PORT = 5672;
     // Fila utilizada entre aplicação que processa remessas (B) e que faz a baixa das remessas (C).
     private static final String QUEUE_NAME = "process_remittance_queue";
 

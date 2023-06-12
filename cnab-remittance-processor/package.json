@@ -1,15 +1,17 @@
 {
   "type": "module",
-  "name": "messagesender",
+  "name": "cnab-remittance-processor",
   "version": "1.0.0",
   "description": "",
-  "main": "sender.js",
+  "main": "cnab-remittance-processor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.10.3"
+    "amqplib": "^0.10.3",
+    "esm": "^3.2.25",
+    "pg": "^8.11.0"
   }
 }

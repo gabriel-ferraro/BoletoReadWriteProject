@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.remittance</groupId>
-    <artifactId>compensator</artifactId>
+    <artifactId>cnab-remittance-compensator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>compensator</name>
+    <name>cnab-remittance-compensator</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>
