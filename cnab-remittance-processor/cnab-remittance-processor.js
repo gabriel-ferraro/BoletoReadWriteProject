@@ -1,8 +1,8 @@
-import * as pg from 'pg'
-const { Client } = pg;
-import { connect } from 'amqplib';
-import fs from 'fs';
-import path from 'path';
+const pg = require('pg');
+const { Pool } = pg;
+const { connect } = require('amqplib');
+const fs = require('fs');
+const path = require('path');
 
 async function main() {
     try {
@@ -18,7 +18,6 @@ async function main() {
                 let remittanceId = msg.content.toString()
                 console.log("Mensagem recebida: ", remittanceId);
                 remittanceId = remittanceId.split(" ").pop();
-                console.log("merda: " + remittanceId);
                 // Chama métodos para fazer a baixa da remessa.
                 updateRemmitanceState(remittanceId);
                 removeCnabFromHotFolder(remittanceId);
@@ -32,7 +31,7 @@ async function main() {
 
 async function updateRemmitanceState(id) {
     try {
-        const client = new pg.Client({
+        const client = new Pool({
             user: "admin",
             host: "localhost",
             database: "postgres",
@@ -42,10 +41,13 @@ async function updateRemmitanceState(id) {
 
         await client.connect();
 
-        const query = 'UPDATE remittance SET isCompensated = TRUE WHERE id = $1';
+        const query = 'UPDATE remittance SET is_compensated = TRUE WHERE id = $1';
         const values = [id];
         // Faz alteração no registro.
         await client.query(query, values);
+        
+        console.log("Remessa de indice " + id + "compensada\n");
+        
         await client.end();
     } catch (error) {
         console.error('Erro:', error);
