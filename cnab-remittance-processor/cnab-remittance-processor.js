@@ -8,17 +8,17 @@ async function main() {
     try {
         const connection = await connect("amqp://localhost");
         const channel = await connection.createChannel();
-        const queue = "remessas_message";
+        const queue = "generate_remittance_queue";
         await channel.assertQueue(queue, { durable: false });
 
         console.log("Aguardando mensagens...");
         
         channel.consume(queue, msg => {
-            console.log(`Processar remessa: ${msg.content.toString()}`);
-        
-            if (message.content) {
-                let remittanceId = message.content.toString()
+            if (msg.content) {
+                let remittanceId = msg.content.toString()
                 console.log("Mensagem recebida: ", remittanceId);
+                remittanceId = remittanceId.split(" ").pop();
+                console.log("merda: " + remittanceId);
                 // Chama métodos para fazer a baixa da remessa.
                 updateRemmitanceState(remittanceId);
                 removeCnabFromHotFolder(remittanceId);
@@ -32,7 +32,7 @@ async function main() {
 
 async function updateRemmitanceState(id) {
     try {
-        const client = new Client({
+        const client = new pg.Client({
             user: "admin",
             host: "localhost",
             database: "postgres",
@@ -46,9 +46,6 @@ async function updateRemmitanceState(id) {
         const values = [id];
         // Faz alteração no registro.
         await client.query(query, values);
-
-        console.log("Registro atualizado com sucesso.");
-
         await client.end();
     } catch (error) {
         console.error('Erro:', error);
